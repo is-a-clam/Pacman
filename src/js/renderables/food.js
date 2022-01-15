@@ -1,22 +1,21 @@
-import * as me from 'melonjs/dist/melonjs.module.js';
+import * as me from "melonjs/dist/melonjs.module.js"
 
-import CONSTANTS from '../constants.js';
+import CONSTANTS from "../constants.js"
 
 class Food extends me.Sprite {
-
-    constructor(row, col) {
-        let coord = me.state.current().tileToPixel(row, col);
+    constructor(row, column) {
+        let coord = me.state.current().tileToPixel(row, column)
         super(coord.x, coord.y, {
             image: me.loader.getImage("food"),
             width: CONSTANTS.TILE_SIZE,
-            height: CONSTANTS.TILE_SIZE
-        });
+            height: CONSTANTS.TILE_SIZE,
+        })
     }
 
     update(dt) {
-        super.update(dt);
-        return true;
+        super.update(dt)
+        return true
     }
 }
 
-export default Food;
+export default Food

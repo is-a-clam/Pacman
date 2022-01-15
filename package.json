@@ -1,40 +1,33 @@
 {
-  "name": "boilerplate",
-  "version": "2.3.0",
-  "description": "melonJS project boilerplate",
-  "homepage": "http://www.melonjs.org/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/melonjs/boilerplate.git"
-  },
-  "bugs": {
-    "url": "https://github.com/melonjs/boilerplate/issues"
-  },
+  "name": "melonjs-es6-boilerplate",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Isaac Lam",
   "license": "MIT",
-  "author": {
-    "name": "Olivier Biot",
-    "email": "contact@melonjs.org"
-  },
-  "main": "main.js",
   "devDependencies": {
-    "grunt": "^1.2.1",
-    "grunt-asar": "github:bwin/grunt-asar#update-asar",
-    "grunt-contrib-clean": "^2.0.0",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-connect": "^2.1.0",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-uglify": "^4.0.1",
-    "grunt-contrib-watch": "^1.1.0",
-    "grunt-download-electron": "^2.1.4",
-    "grunt-processhtml": "^0.4.1",
-    "grunt-replace": "^1.0.1"
-  },
-  "dependencies": {
-    "coffeescript": "^2.5.1"
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
+    "@babel/register": "^7.16.5",
+    "babel-loader": "^8.2.3",
+    "copy-webpack-plugin": "^10.2.0",
+    "favicons": "^6.2.2",
+    "favicons-webpack-plugin": "^5.0.2",
+    "fs": "^0.0.1-security",
+    "html-webpack-plugin": "^5.5.0",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.6.0"
   },
   "scripts": {
-    "build": "grunt",
-    "serve": "npm run build && grunt serve",
-    "dist": "grunt dist"
+    "dev": "webpack-dev-server --mode=development --config webpack.config.js",
+    "build": "webpack --mode=production --config webpack.config.js"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "array2d": "0.0.5",
+    "css-loader": "^6.5.1",
+    "melonjs": "^10.2.3",
+    "style-loader": "^3.3.1"
   }
 }

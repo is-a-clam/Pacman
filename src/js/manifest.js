@@ -19,6 +19,26 @@ const DataManifest = [
         src: "./data/images/pacman.png",
     },
     {
+        name: "blinky",
+        type: "image",
+        src: "./data/images/blinky.png",
+    },
+    {
+        name: "clyde",
+        type: "image",
+        src: "./data/images/clyde.png",
+    },
+    {
+        name: "inky",
+        type: "image",
+        src: "./data/images/inky.png",
+    },
+    {
+        name: "pinky",
+        type: "image",
+        src: "./data/images/pinky.png",
+    },
+    {
         name: "wall",
         type: "image",
         src: "./data/images/wall.png",

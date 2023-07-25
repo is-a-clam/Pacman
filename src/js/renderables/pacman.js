@@ -15,8 +15,9 @@ class Pacman extends me.Sprite {
         this.row = row
         this.column = column
 
-        this.currentDir = null
-        this.queueDir = null
+        this.currentDirection = null
+        this.queueDirection = null
+        this.turnCooldown = null
 
         this.speed = CONSTANTS.TILE_SIZE * 9
     }
@@ -24,69 +25,58 @@ class Pacman extends me.Sprite {
     update(dt) {
         super.update(dt)
 
-        this.queueDir = null
-        if (
-            me.input.isKeyPressed(DIRECTION.up) &&
-            this.currentDir != DIRECTION.up
-        ) {
-            if (this.currentDir == DIRECTION.down) {
-                this.currentDir = DIRECTION.up
+        if (this.turnCooldown !== null) {
+            if (!(this.turnCooldown.row == this.row && this.turnCooldown.column == this.column)) {
+                this.turnCooldown = null
             }
-            this.queueDir = DIRECTION.up
-        }
-        if (
-            me.input.isKeyPressed(DIRECTION.down) &&
-            this.currentDir != DIRECTION.down
-        ) {
-            if (this.currentDir == DIRECTION.up) {
-                this.currentDir = DIRECTION.down
-            }
-            this.queueDir = DIRECTION.down
-        }
-        if (
-            me.input.isKeyPressed(DIRECTION.left) &&
-            this.currentDir != DIRECTION.left
-        ) {
-            if (this.currentDir == DIRECTION.right) {
-                this.currentDir = DIRECTION.left
-            }
-            this.queueDir = DIRECTION.left
-        }
-        if (
-            me.input.isKeyPressed(DIRECTION.right) &&
-            this.currentDir != DIRECTION.right
-        ) {
-            if (this.currentDir == DIRECTION.left) {
-                this.currentDir = DIRECTION.right
-            }
-            this.queueDir = DIRECTION.right
         }
 
-        if (this.queueDir) {
+        this.queueDirection = null
+        if (me.input.isKeyPressed(DIRECTION.up) && this.currentDirection != DIRECTION.up) {
+            if (this.currentDirection == DIRECTION.down) {
+                this.currentDirection = DIRECTION.up
+            } else {
+                this.queueDirection = DIRECTION.up
+            }
+        }
+        if (me.input.isKeyPressed(DIRECTION.down) && this.currentDirection != DIRECTION.down) {
+            if (this.currentDirection == DIRECTION.up) {
+                this.currentDirection = DIRECTION.down
+            } else {
+                this.queueDirection = DIRECTION.down
+            }
+        }
+        if (me.input.isKeyPressed(DIRECTION.left) && this.currentDirection != DIRECTION.left) {
+            if (this.currentDirection == DIRECTION.right) {
+                this.currentDirection = DIRECTION.left
+            } else {
+                this.queueDirection = DIRECTION.left
+            }
+        }
+        if (me.input.isKeyPressed(DIRECTION.right) && this.currentDirection != DIRECTION.right) {
+            if (this.currentDirection == DIRECTION.left) {
+                this.currentDirection = DIRECTION.right
+            } else {
+                this.queueDirection = DIRECTION.right
+            }
+        }
+
+        if (this.queueDirection !== null && this.turnCooldown === null) {
             let coord = me.state.current().tileToPixel(this.row, this.column)
-            if (
-                Math.abs(this.pos.x - coord.x) <
-                    CONSTANTS.TURN_THRESHOLD * CONSTANTS.TILE_SIZE &&
-                Math.abs(this.pos.y - coord.y) <
-                    CONSTANTS.TURN_THRESHOLD * CONSTANTS.TILE_SIZE
-            ) {
-                if (
-                    !me.state
-                        .current()
-                        .columnlideWall(this.row, this.column, this.queueDir)
-                ) {
-                    this.currentDir = this.queueDir
+            let threshold = CONSTANTS.TURN_THRESHOLD * CONSTANTS.TILE_SIZE
+            if (Math.abs(this.pos.x - coord.x) < threshold && Math.abs(this.pos.y - coord.y) < threshold) {
+                if (!me.state.current().columnlideWall(this.row, this.column, this.queueDirection)) {
+                    this.currentDirection = this.queueDirection
                     this.pos.x = coord.x
                     this.pos.y = coord.y
+                    this.turnCooldown = { row: this.row, column: this.column }
                 }
             }
         }
 
-        if (
-            me.state.current().columnlideWall(this.row, this.column, this.currentDir)
-        ) {
+        if (me.state.current().columnlideWall(this.row, this.column, this.currentDirection)) {
             let coord = me.state.current().tileToPixel(this.row, this.column)
-            switch (this.currentDir) {
+            switch (this.currentDirection) {
                 case DIRECTION.up:
                     if (this.pos.y <= coord.y) {
                         this.pos.y = coord.y
@@ -114,7 +104,7 @@ class Pacman extends me.Sprite {
             }
         }
 
-        switch (this.currentDir) {
+        switch (this.currentDirection) {
             case DIRECTION.up:
                 this.pos.y -= (this.speed * dt) / 1000
                 this.row = Math.floor(this.pos.y / CONSTANTS.TILE_SIZE)

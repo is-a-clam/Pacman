@@ -46,8 +46,7 @@ module.exports = {
                         var texture = /\.(jpe?g|gif|png|svg|heic|pkm|pvr)$/
                         var fnt = /\.(woff|woff2|ttf|fnt)$/
                         var map = /\.(tmx|tsx)$/
-                        var audio =
-                            /\.(wav|mp3|mpeg|opus|ogg|oga|wav|aac|caf|m4a|m4b|mp4|weba|webm|dolby|flac)$/
+                        var audio = /\.(wav|mp3|mpeg|opus|ogg|oga|wav|aac|caf|m4a|m4b|mp4|weba|webm|dolby|flac)$/
                         var misc = /\.(xml|bin|glsl|ym|json|js)$/
 
                         // only copy production files

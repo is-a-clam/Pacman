@@ -23,10 +23,7 @@ class PlayScreen extends me.Stage {
                 nextColumn = column + 1
                 break
         }
-        if (
-            this.currentMap[nextRow][nextColumn] === this.maps.wall ||
-            this.currentMap[nextRow][nextColumn] === this.maps.e_spawn
-        ) {
+        if (this.currentMap[nextRow][nextColumn] === this.maps.wall) {
             return true
         }
         return false
@@ -86,6 +83,8 @@ class PlayScreen extends me.Stage {
         })[0]
         this.player = me.pool.pull("player", pSpawn[0], pSpawn[1])
         me.game.world.addChild(this.player)
+
+        me.game.world.addChild(me.pool.pull("ghost", 9, 9, null))
 
         me.input.bindKey(me.input.KEY.W, DIRECTION.up)
         me.input.bindKey(me.input.KEY.S, DIRECTION.down)

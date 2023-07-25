@@ -147,13 +147,7 @@ class DebugPanel extends me.Renderable {
         this.checkbox = {}
 
         // Useful counters
-        this.counters = new Counters([
-            "shapes",
-            "sprites",
-            "velocity",
-            "bounds",
-            "children",
-        ])
+        this.counters = new Counters(["shapes", "sprites", "velocity", "bounds", "children"])
 
         // for z ordering
         // make it ridiculously high
@@ -230,8 +224,7 @@ class DebugPanel extends me.Renderable {
         })
 
         // some internal string/length
-        this.help_str =
-            "[" + String.fromCharCode(32 + this.debugToggle) + "]show/hide"
+        this.help_str = "[" + String.fromCharCode(32 + this.debugToggle) + "]show/hide"
         this.help_str_len = this.font.measureText(this.help_str).width
         this.fps_str_len = this.font.measureText("00/00 fps").width
         this.memoryPositionX = 325 * this.mod
@@ -305,26 +298,15 @@ class DebugPanel extends me.Renderable {
                     !(this instanceof me.ImageLayer)
                 ) {
                     // draw the renderable bounding box
-                    if (
-                        _this.checkbox.renderHitBox.selected &&
-                        this.getBounds().isFinite()
-                    ) {
+                    if (_this.checkbox.renderHitBox.selected && this.getBounds().isFinite()) {
                         if (typeof this.ancestor !== "undefined") {
-                            var absolutePosition =
-                                this.ancestor.getAbsolutePosition()
+                            var absolutePosition = this.ancestor.getAbsolutePosition()
 
                             renderer.save()
 
                             // if this object of this renderable parent is not the root container
-                            if (
-                                !this.root &&
-                                !this.ancestor.root &&
-                                this.ancestor.floating
-                            ) {
-                                renderer.translate(
-                                    -absolutePosition.x,
-                                    -absolutePosition.y
-                                )
+                            if (!this.root && !this.ancestor.root && this.ancestor.floating) {
+                                renderer.translate(-absolutePosition.x, -absolutePosition.y)
                             }
                         }
 
@@ -347,11 +329,7 @@ class DebugPanel extends me.Renderable {
 
                             // draw all defined shapes
                             renderer.setColor("red")
-                            for (
-                                var i = this.body.shapes.length, shape;
-                                i--, (shape = this.body.shapes[i]);
-
-                            ) {
+                            for (var i = this.body.shapes.length, shape; i--, (shape = this.body.shapes[i]); ) {
                                 renderer.stroke(shape)
                                 _this.counters.inc("shapes")
                             }
@@ -371,11 +349,7 @@ class DebugPanel extends me.Renderable {
             this._patched.apply(this, arguments)
 
             // draw the font rectangle
-            if (
-                _this.visible &&
-                _this.checkbox.renderHitBox.selected &&
-                this.name !== "debugPanelFont"
-            ) {
+            if (_this.visible && _this.checkbox.renderHitBox.selected && this.name !== "debugPanelFont") {
                 var bounds = this.getBounds()
 
                 if (typeof this.ancestor !== "undefined") {
@@ -425,12 +399,8 @@ class DebugPanel extends me.Renderable {
                     renderer.save()
 
                     renderer.translate(
-                        -this.pos.x -
-                            this.body.getBounds().x -
-                            this.ancestor.getAbsolutePosition().x,
-                        -this.pos.y -
-                            this.body.getBounds().y -
-                            this.ancestor.getAbsolutePosition().y
+                        -this.pos.x - this.body.getBounds().x - this.ancestor.getAbsolutePosition().x,
+                        -this.pos.y - this.body.getBounds().y - this.ancestor.getAbsolutePosition().y
                     )
 
                     if (this.renderable instanceof me.Renderable) {
@@ -451,21 +421,14 @@ class DebugPanel extends me.Renderable {
 
                     // draw all defined shapes
                     renderer.setColor("red")
-                    for (
-                        var i = this.body.shapes.length, shape;
-                        i--, (shape = this.body.shapes[i]);
-
-                    ) {
+                    for (var i = this.body.shapes.length, shape; i--, (shape = this.body.shapes[i]); ) {
                         renderer.stroke(shape)
                         _this.counters.inc("shapes")
                     }
                     renderer.restore()
                 }
 
-                if (
-                    _this.checkbox.renderVelocity.selected &&
-                    (this.body.vel.x || this.body.vel.y)
-                ) {
+                if (_this.checkbox.renderVelocity.selected && (this.body.vel.x || this.body.vel.y)) {
                     var bounds = this.getBounds()
                     var hWidth = bounds.width / 2
                     var hHeight = bounds.height / 2
@@ -475,12 +438,7 @@ class DebugPanel extends me.Renderable {
 
                     renderer.setColor("blue")
                     renderer.translate(0, -hHeight)
-                    renderer.strokeLine(
-                        0,
-                        0,
-                        ~~(this.body.vel.x * hWidth),
-                        ~~(this.body.vel.y * hHeight)
-                    )
+                    renderer.strokeLine(0, 0, ~~(this.body.vel.x * hWidth), ~~(this.body.vel.y * hHeight))
                     _this.counters.inc("velocity")
 
                     renderer.restore()
@@ -500,11 +458,7 @@ class DebugPanel extends me.Renderable {
             // add the debug panel to the game world
             me.game.world.addChild(this, Infinity)
             // register a mouse event for the checkboxes
-            me.input.registerPointerEvent(
-                "pointerdown",
-                this,
-                this.onClick.bind(this)
-            )
+            me.input.registerPointerEvent("pointerdown", this, this.onClick.bind(this))
             // mark it as visible
             this.visible = true
             // force repaint
@@ -541,16 +495,13 @@ class DebugPanel extends me.Renderable {
     onClick(e) {
         // check the clickable areas
         if (this.checkbox.renderHitBox.contains(e.gameX, e.gameY)) {
-            this.checkbox.renderHitBox.selected =
-                !this.checkbox.renderHitBox.selected
+            this.checkbox.renderHitBox.selected = !this.checkbox.renderHitBox.selected
         } else if (this.checkbox.renderVelocity.contains(e.gameX, e.gameY)) {
             // does nothing for now, since velocity is
             // rendered together with hitboxes (is a global debug flag required?)
-            this.checkbox.renderVelocity.selected =
-                !this.checkbox.renderVelocity.selected
+            this.checkbox.renderVelocity.selected = !this.checkbox.renderVelocity.selected
         } else if (this.checkbox.renderQuadTree.contains(e.gameX, e.gameY)) {
-            this.checkbox.renderQuadTree.selected =
-                !this.checkbox.renderQuadTree.selected
+            this.checkbox.renderQuadTree.selected = !this.checkbox.renderQuadTree.selected
         }
         // force repaint
         me.game.repaint()
@@ -567,12 +518,7 @@ class DebugPanel extends me.Renderable {
             if (_alpha > 0.0) {
                 renderer.save()
                 renderer.setColor("rgba(255,0,0," + _alpha + ")")
-                renderer.fillRect(
-                    bounds.left,
-                    bounds.top,
-                    bounds.width,
-                    bounds.height
-                )
+                renderer.fillRect(bounds.left, bounds.top, bounds.width, bounds.height)
                 renderer.restore()
             }
         } else {
@@ -598,14 +544,8 @@ class DebugPanel extends me.Renderable {
     /** @private */
     drawMemoryGraph(renderer, endX) {
         if (window.performance && window.performance.memory) {
-            var usedHeap = me.Math.round(
-                window.performance.memory.usedJSHeapSize / 1048576,
-                2
-            )
-            var totalHeap = me.Math.round(
-                window.performance.memory.totalJSHeapSize / 1048576,
-                2
-            )
+            var usedHeap = me.Math.round(window.performance.memory.usedJSHeapSize / 1048576, 2)
+            var totalHeap = me.Math.round(window.performance.memory.totalJSHeapSize / 1048576, 2)
             var maxLen = ~~(endX - this.memoryPositionX - 5)
             var len = maxLen * (usedHeap / totalHeap)
 
@@ -622,19 +562,9 @@ class DebugPanel extends me.Renderable {
             )
         } else {
             // Heap Memory information not available
-            this.font.draw(
-                renderer,
-                "Heap : ??/?? MB",
-                this.memoryPositionX,
-                2 * this.mod
-            )
+            this.font.draw(renderer, "Heap : ??/?? MB", this.memoryPositionX, 2 * this.mod)
         }
-        this.font.draw(
-            renderer,
-            "Pool : " + me.pool.getInstanceCount(),
-            this.memoryPositionX,
-            10 * this.mod
-        )
+        this.font.draw(renderer, "Pool : " + me.pool.getInstanceCount(), this.memoryPositionX, 10 * this.mod)
     }
 
     /** @private */
@@ -655,101 +585,50 @@ class DebugPanel extends me.Renderable {
 
         this.font.textAlign = "left"
 
-        this.font.draw(
-            renderer,
-            "#objects : " + me.game.world.children.length,
-            5 * this.mod,
-            2 * this.mod
-        )
-        this.font.draw(
-            renderer,
-            "#draws   : " + me.game.world.drawCount,
-            5 * this.mod,
-            10 * this.mod
-        )
+        this.font.draw(renderer, "#objects : " + me.game.world.children.length, 5 * this.mod, 2 * this.mod)
+        this.font.draw(renderer, "#draws   : " + me.game.world.drawCount, 5 * this.mod, 10 * this.mod)
 
         // debug checkboxes
         this.font.draw(
             renderer,
-            "?hitbox   [" +
-                (this.checkbox.renderHitBox.selected ? "x" : " ") +
-                "]",
+            "?hitbox   [" + (this.checkbox.renderHitBox.selected ? "x" : " ") + "]",
             75 * this.mod,
             2 * this.mod
         )
         this.font.draw(
             renderer,
-            "?velocity [" +
-                (this.checkbox.renderVelocity.selected ? "x" : " ") +
-                "]",
+            "?velocity [" + (this.checkbox.renderVelocity.selected ? "x" : " ") + "]",
             75 * this.mod,
             10 * this.mod
         )
 
         this.font.draw(
             renderer,
-            "?QuadTree [" +
-                (this.checkbox.renderQuadTree.selected ? "x" : " ") +
-                "]",
+            "?QuadTree [" + (this.checkbox.renderQuadTree.selected ? "x" : " ") + "]",
             150 * this.mod,
             2 * this.mod
         )
 
         // draw the update duration
-        this.font.draw(
-            renderer,
-            "Update : " + this.frameUpdateTime.toFixed(2) + " ms",
-            225 * this.mod,
-            2 * this.mod
-        )
+        this.font.draw(renderer, "Update : " + this.frameUpdateTime.toFixed(2) + " ms", 225 * this.mod, 2 * this.mod)
         // draw the draw duration
-        this.font.draw(
-            renderer,
-            "Draw   : " + this.frameDrawTime.toFixed(2) + " ms",
-            225 * this.mod,
-            10 * this.mod
-        )
+        this.font.draw(renderer, "Draw   : " + this.frameDrawTime.toFixed(2) + " ms", 225 * this.mod, 10 * this.mod)
 
         // Draw color code hints (not supported with bitmapfont)
         //this.font.fillStyle.copy("red");
-        this.font.draw(
-            renderer,
-            "Shapes   : " + this.counters.get("shapes"),
-            5 * this.mod,
-            17 * this.mod
-        )
+        this.font.draw(renderer, "Shapes   : " + this.counters.get("shapes"), 5 * this.mod, 17 * this.mod)
 
         //this.font.fillStyle.copy("green");
-        this.font.draw(
-            renderer,
-            "Sprites   : " + this.counters.get("sprites"),
-            75 * this.mod,
-            17 * this.mod
-        )
+        this.font.draw(renderer, "Sprites   : " + this.counters.get("sprites"), 75 * this.mod, 17 * this.mod)
 
         //this.font.fillStyle.copy("blue");
-        this.font.draw(
-            renderer,
-            "Velocity  : " + this.counters.get("velocity"),
-            150 * this.mod,
-            17 * this.mod
-        )
+        this.font.draw(renderer, "Velocity  : " + this.counters.get("velocity"), 150 * this.mod, 17 * this.mod)
 
         //this.font.fillStyle.copy("orange");
-        this.font.draw(
-            renderer,
-            "Bounds : " + this.counters.get("bounds"),
-            225 * this.mod,
-            17 * this.mod
-        )
+        this.font.draw(renderer, "Bounds : " + this.counters.get("bounds"), 225 * this.mod, 17 * this.mod)
 
         //this.font.fillStyle.copy("purple");
-        this.font.draw(
-            renderer,
-            "Children : " + this.counters.get("children"),
-            325 * this.mod,
-            17 * this.mod
-        )
+        this.font.draw(renderer, "Children : " + this.counters.get("children"), 325 * this.mod, 17 * this.mod)
 
         // Reset font style
         //this.font.setFont("courier", this.font_size, "white");
